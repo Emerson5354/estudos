@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Física — Página Inicial</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fonte moderna -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent: #BD4976;
+      --bg: #050505;
+      --bg-soft: #101010;
+      --text: #F5F5F5;
+      --muted: #A0A0A0;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #151515 0, var(--bg) 55%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+    }
+
+    main {
+      width: 100%;
+      max-width: 860px;
+      padding: 2.8rem 1.6rem 3rem;
+      background: radial-gradient(circle at top left, rgba(189, 73, 118, 0.18), rgba(16, 16, 16, 0.96));
+      border-radius: 26px;
+      border: 1px solid var(--border-subtle);
+      box-shadow:
+        0 26px 60px rgba(0, 0, 0, 0.9),
+        0 0 0 1px rgba(255, 255, 255, 0.02);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 10vw, 3.2rem);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+      background: linear-gradient(120deg, #FFC2D7, var(--accent));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    p.subtitle {
+      font-size: 0.98rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.8;
+    }
+
+    .card-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .card-link {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.35rem;
+      padding: 1.3rem 1.4rem;
+      border-radius: 18px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(0, 0, 0, 0.68);
+      text-decoration: none;
+      transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
+      max-width: 360px;
+      width: 100%;
+    }
+
+    .card-link:hover,
+    .card-link:focus-visible {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
+      border-color: rgba(189, 73, 118, 0.8);
+      background: rgba(0, 0, 0, 0.82);
+      outline: none;
+    }
+
+    .card-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .card-description {
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-align: left;
+    }
+
+    .card-cta {
+      margin-top: 0.6rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    @media (max-width: 768px) {
+      main {
+        border-radius: 22px;
+        padding: 2.3rem 1.3rem 2.6rem;
+      }
+
+      .card-link {
+        padding: 1.15rem 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>FÍSICA</h1>
+
+    <div class="card-container">
+      <!-- Ajuste o href se o arquivo de Cinemática tiver outro nome -->
+      <a class="card-link" href="fisica.html">
+        <span class="card-label">Conteúdo</span>
+        <span class="card-title">Cinemática</span>
+        <span class="card-description">
+          Introdução completa aos conceitos de posição, deslocamento, velocidade,
+          aceleração, MRU, MRUV, queda livre, lançamento vertical e MCU, com exemplos e exercícios resolvidos.
+        </span>
+        <span class="card-cta">Ir para Cinemática →</span>
+      </a>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cinemática — Fundamentos para Ensino Médio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fonte moderna -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --accent: #BD4976;
+      --bg: #050505;
+      --bg-soft: #101010;
+      --text: #F5F5F5;
+      --muted: #A0A0A0;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #151515 0, var(--bg) 55%);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2.5rem 1.4rem 3.5rem;
+      background: radial-gradient(circle at top left, rgba(189, 73, 118, 0.18), rgba(16, 16, 16, 0.96));
+      border-radius: 26px;
+      border: 1px solid var(--border-subtle);
+      box-shadow:
+        0 26px 60px rgba(0, 0, 0, 0.9),
+        0 0 0 1px rgba(255, 255, 255, 0.02);
+      margin-top: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-top: 1.8rem;
+      margin-bottom: 0.7rem;
+    }
+
+    h1 {
+      font-size: clamp(2.1rem, 6.5vw, 2.7rem);
+      text-align: center;
+      margin-top: 0.5rem;
+      margin-bottom: 1.8rem;
+      background: linear-gradient(120deg, #FFC2D7, var(--accent));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 5vw, 2rem);
+      text-align: center;
+      color: var(--text);
+      margin-top: 2.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-top: 1.5rem;
+    }
+
+    h4 {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-top: 1.2rem;
+    }
+
+    p {
+      margin: 0.7rem 0;
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    ul,
+    ol {
+      margin: 0.5rem 0 1rem 1.2rem;
+      padding: 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    li {
+      margin: 0.25rem 0;
+    }
+
+    strong {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border-subtle);
+      margin: 2.2rem 0;
+    }
+
+    code {
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.9em;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 0.16em 0.4em;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text);
+    }
+
+    pre {
+      margin: 1rem 0 1.3rem;
+      padding: 0.9rem 1rem;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.75);
+      border: 1px solid var(--border-subtle);
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+
+    pre code {
+      border: none;
+      background: transparent;
+      padding: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.6rem;
+      font-size: 0.88rem;
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(0, 0, 0, 0.7);
+    }
+
+    thead {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 2.1rem 1.2rem 3rem;
+        margin-top: 1.4rem;
+        border-radius: 22px;
+      }
+
+      p,
+      li {
+        font-size: 0.95rem;
+      }
+
+      h2 {
+        font-size: 1.4rem;
+      }
+
+      h3 {
+        font-size: 1.02rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Cinemática: Entendendo o Movimento Passo a Passo</h1>
+
+  <h2>1. O que é Cinemática?</h2>
+  <p>
+    A <strong>cinemática</strong> é a parte da Física que estuda e descreve o
+    <strong>movimento</strong> dos corpos sem se preocupar com as <strong>causas</strong>
+    desse movimento. Em outras palavras, a cinemática responde perguntas como:
+  </p>
+  <ul>
+    <li>Onde o corpo está em cada instante?</li>
+    <li>Quão rápido ele se move?</li>
+    <li>Em que direção e em que sentido ele se desloca?</li>
+    <li>Como a velocidade muda com o tempo?</li>
+  </ul>
+  <p>
+    A explicação <strong>não</strong> entra em força, empurrões ou interações
+    (isso é da Dinâmica). Aqui, o foco é descrever com cuidado:
+    <strong>posição, deslocamento, velocidade e aceleração</strong>.
+  </p>
+
+  <hr />
+
+  <h2>2. Movimento e Referencial</h2>
+
+  <h3>2.1 Movimento: variação de posição no tempo</h3>
+  <p>
+    Dizemos que um corpo está em <strong>movimento</strong> quando a sua
+    posição <strong>muda com o tempo</strong>. Se a posição não muda ao longo do
+    tempo, dizemos que ele está em <strong>repouso</strong>.
+  </p>
+  <p>
+    Uma ideia importante é que “estar em movimento” não é uma propriedade absoluta.
+    Depende sempre de <strong>com quem ou com o quê você está comparando</strong>.
+  </p>
+
+  <h3>2.2 Referencial</h3>
+  <p>
+    O <strong>referencial</strong> é o ponto, objeto ou sistema em relação ao qual
+    descrevemos o movimento.
+  </p>
+  <ul>
+    <li>
+      Dentro de um ônibus em movimento, você pode estar em <strong>repouso</strong>
+      em relação ao ônibus (pois está sentado), mas em <strong>movimento</strong>
+      em relação à rua.
+    </li>
+  </ul>
+  <p>
+    Sem referencial, não faz sentido perguntar se algo está “parado” ou “em movimento”.
+    Por isso, toda descrição cinemática parte da escolha de um referencial.
+  </p>
+
+  <hr />
+
+  <h2>3. Posição, Deslocamento (ΔS) e Distância Percorrida</h2>
+
+  <h3>3.1 Posição</h3>
+  <p>
+    Em problemas de cinemática de ensino médio, é comum usar uma
+    <strong>reta numérica</strong> para representar a posição de um corpo.
+    Cada ponto da reta corresponde a uma posição, medida por uma coordenada
+    (por exemplo, em metros).
+  </p>
+
+  <h3>3.2 Deslocamento (ΔS)</h3>
+  <p>
+    O <strong>deslocamento</strong> é a <strong>variação da posição</strong>. Se um corpo
+    sai de uma posição inicial <code>S<sub>0</sub></code> e chega a uma posição final
+    <code>S</code>, definimos:
+  </p>
+  <pre><code>ΔS = S - S₀</code></pre>
+  <p>
+    O deslocamento é uma grandeza <strong>vetorial</strong>: além do valor (módulo),
+    ele tem <strong>sentido</strong> (por exemplo, positivo ou negativo numa reta).
+  </p>
+  <ul>
+    <li>De 0 m para 8 m → <code>ΔS = +8 m</code>.</li>
+    <li>De 8 m para 0 m → <code>ΔS = -8 m</code>.</li>
+  </ul>
+
+  <h3>3.3 Distância percorrida</h3>
+  <p>
+    A <strong>distância percorrida</strong> é o comprimento total do caminho que o corpo
+    fez, sem se importar com o sentido. É uma grandeza <strong>escalar</strong>.
+  </p>
+  <ul>
+    <li>
+      Se você vai de 0 m a 8 m e volta a 0 m, a distância percorrida é
+      <strong>16 m</strong>, mas o deslocamento total é <strong>0 m</strong>.
+    </li>
+  </ul>
+  <p>
+    Em resumo:
+  </p>
+  <ul>
+    <li><strong>Deslocamento</strong> → mudança de posição, com sentido.</li>
+    <li><strong>Distância</strong> → quanto você “andou”, somando tudo.</li>
+  </ul>
+
+  <hr />
+
+  <h2>4. Velocidade Média e Velocidade Instantânea</h2>
+
+  <h3>4.1 Velocidade média</h3>
+  <p>
+    A <strong>velocidade média</strong> indica, em média, <strong>quão rápido</strong>
+    a posição mudou num certo intervalo de tempo. Definição:
+  </p>
+  <pre><code>vₘ = ΔS / Δt</code></pre>
+  <p>
+    Onde:
+  </p>
+  <ul>
+    <li><code>vₘ</code> é a velocidade média;</li>
+    <li><code>ΔS</code> é o deslocamento;</li>
+    <li><code>Δt</code> é o intervalo de tempo considerado.</li>
+  </ul>
+  <p>
+    A fórmula tem essa forma porque velocidade é justamente a
+    “<strong>taxa de variação da posição</strong>”: quanto a posição muda por unidade de tempo.
+  </p>
+
+  <h4>Exemplo numérico</h4>
+  <p>
+    Um carro sai de 20 m e chega a 80 m em 10 s.
+  </p>
+  <ul>
+    <li><code>ΔS = 80 - 20 = 60 m</code></li>
+    <li><code>Δt = 10 s</code></li>
+  </ul>
+  <p>
+    Logo:
+  </p>
+  <pre><code>vₘ = 60 / 10 = 6 m/s</code></pre>
+
+  <h3>4.2 Velocidade instantânea</h3>
+  <p>
+    A <strong>velocidade instantânea</strong> é a velocidade em um instante específico
+    (por exemplo, exatamente aos 3,0 s). É o que aparece no velocímetro do carro.
+  </p>
+  <p>
+    Em termos mais avançados, ela seria obtida fazendo o intervalo de tempo
+    <code>Δt</code> ficar cada vez menor, aproximando-se de zero. Para o ensino médio,
+    é suficiente saber que:
+  </p>
+  <ul>
+    <li>Em um <strong>MRU</strong>, velocidade média e velocidade instantânea coincidem.</li>
+    <li>Em um <strong>MRUV</strong>, a velocidade varia, então a média e a instantânea não são iguais em geral.</li>
+  </ul>
+
+  <hr />
+
+  <h2>5. Aceleração: Variação da Velocidade</h2>
+  <p>
+    A <strong>aceleração</strong> mede <strong>como a velocidade muda com o tempo</strong>.
+    Definição:
+  </p>
+  <pre><code>a = Δv / Δt</code></pre>
+  <p>
+    Onde:
+  </p>
+  <ul>
+    <li><code>a</code> é a aceleração;</li>
+    <li><code>Δv</code> é a variação da velocidade;</li>
+    <li><code>Δt</code> é o intervalo de tempo.</li>
+  </ul>
+  <p>
+    Se a aceleração é constante, a velocidade aumenta (ou diminui) sempre
+    pelo mesmo valor a cada segundo.
+  </p>
+
+  <h4>Exemplo numérico</h4>
+  <p>
+    Um corpo passa de 2 m/s para 10 m/s em 4 s.
+  </p>
+  <ul>
+    <li><code>Δv = 10 - 2 = 8 m/s</code></li>
+    <li><code>Δt = 4 s</code></li>
+  </ul>
+  <pre><code>a = 8 / 4 = 2 m/s²</code></pre>
+  <p>
+    Isso significa que a cada segundo a velocidade aumenta 2 m/s.
+  </p>
+
+  <hr />
+
+  <h2>6. MRU — Movimento Retilíneo Uniforme</h2>
+
+  <h3>6.1 Características</h3>
+  <ul>
+    <li>Trajetória em <strong>linha reta</strong>.</li>
+    <li><strong>Velocidade constante</strong> (nem acelera, nem freia).</li>
+    <li><strong>Aceleração zero</strong>.</li>
+  </ul>
+
+  <h3>6.2 Função horária da posição</h3>
+  <p>
+    No MRU, a posição varia de forma linear com o tempo:
+  </p>
+  <pre><code>S(t) = S₀ + v · t</code></pre>
+  <p>
+    Onde:
+  </p>
+  <ul>
+    <li><code>S(t)</code> é a posição no instante <code>t</code>;</li>
+    <li><code>S₀</code> é a posição inicial (no instante <code>t = 0</code>);</li>
+    <li><code>v</code> é a velocidade constante;</li>
+    <li><code>t</code> é o tempo.</li>
+  </ul>
+  <p>
+    A fórmula tem essa forma porque, com velocidade constante, a cada unidade de tempo
+    o corpo avança sempre a mesma quantidade de espaço.
+  </p>
+
+  <h4>Exemplo numérico</h4>
+  <p>
+    Um corpo está na posição 20 m no instante inicial e move-se com v = 10 m/s em MRU.
+  </p>
+  <pre><code>S(t) = 20 + 10·t</code></pre>
+  <p>
+    Em <code>t = 3 s</code>:
+  </p>
+  <pre><code>S(3) = 20 + 10·3 = 50 m</code></pre>
+
+  <hr />
+
+  <h2>7. MRUV — Movimento Retilíneo Uniformemente Variado</h2>
+
+  <h3>7.1 Características</h3>
+  <ul>
+    <li>Trajetória em <strong>linha reta</strong>.</li>
+    <li><strong>Aceleração constante</strong>.</li>
+    <li>A velocidade muda de forma uniforme ao longo do tempo.</li>
+  </ul>
+
+  <h3>7.2 Função horária da velocidade</h3>
+  <p>
+    Se a aceleração é constante, a velocidade varia de maneira linear com o tempo:
+  </p>
+  <pre><code>v(t) = v₀ + a · t</code></pre>
+  <p>
+    Onde <code>v₀</code> é a velocidade inicial no instante <code>t = 0</code>.
+    A ideia é: a cada segundo, a velocidade ganha (ou perde) uma quantidade fixa
+    igual à aceleração.
+  </p>
+
+  <h3>7.3 Função horária da posição</h3>
+  <p>
+    Em MRUV, a posição evolui segundo:
+  </p>
+  <pre><code>S(t) = S₀ + v₀·t + (a·t²)/2</code></pre>
+  <p>
+    O termo <code>(a·t²)/2</code> aparece porque, além da velocidade inicial,
+    a velocidade vai aumentando (ou diminuindo) ao longo do tempo. Quando somamos
+    todos esses pequenos acréscimos de deslocamento, surge o termo proporcional a
+    <code>t²</code>.
+  </p>
+
+  <h3>7.4 Equação de Torricelli</h3>
+  <p>
+    Em muitos problemas não se conhece o tempo explicitamente. Nesses casos,
+    é útil a equação:
+  </p>
+  <pre><code>v² = v₀² + 2·a·ΔS</code></pre>
+  <p>
+    Ela relaciona diretamente <strong>velocidade</strong>, <strong>aceleração</strong>
+    e <strong>deslocamento</strong>, sem envolver o tempo.
+  </p>
+
+  <h4>Exemplo numérico simples</h4>
+  <p>
+    Um corpo parte do repouso (v₀ = 0) com aceleração 4 m/s². Qual é a velocidade
+    após percorrer 10 m?
+  </p>
+  <pre><code>v² = v₀² + 2·a·ΔS
+v² = 0 + 2·4·10
+v² = 80
+v = √80 ≈ 8,94 m/s</code></pre>
+
+  <hr />
+
+  <h2>8. Queda Livre e Lançamento Vertical</h2>
+
+  <h3>8.1 Aceleração da gravidade (g)</h3>
+  <p>
+    Próximo à superfície da Terra, um corpo em queda livre está sujeito a uma aceleração
+    praticamente constante, chamada <strong>aceleração da gravidade</strong>, indicada
+    por <strong>g</strong>.
+  </p>
+  <p>
+    No ensino médio, costuma-se usar:
+  </p>
+  <ul>
+    <li><code>g ≈ 10 m/s²</code> (valor aproximado, para facilitar os cálculos).</li>
+  </ul>
+
+  <h3>8.2 Queda livre</h3>
+  <p>
+    Na <strong>queda livre</strong>, o corpo é liberado e cai sob ação exclusiva da
+    gravidade (desprezando o ar). O movimento é um MRUV com:
+  </p>
+  <ul>
+    <li><strong>aceleração constante</strong>, igual a <code>g</code> para baixo;</li>
+    <li>se ele é solto do repouso, então <code>v₀ = 0</code>.</li>
+  </ul>
+
+  <h4>Equações (adotando o sentido “para baixo” como positivo)</h4>
+  <pre><code>v(t) = v₀ + g·t
+S(t) = S₀ + v₀·t + (g·t²)/2
+v² = v₀² + 2·g·ΔS</code></pre>
+
+  <h3>8.3 Lançamento vertical para cima</h3>
+  <p>
+    No <strong>lançamento vertical para cima</strong>, o corpo é lançado com velocidade
+    inicial para cima, mas a gravidade continua apontando para baixo.
+  </p>
+  <p>
+    Se escolhemos o sentido “para cima” como positivo, então:
+  </p>
+  <ul>
+    <li><code>a = -g</code> (aceleração contrária ao movimento inicial).</li>
+  </ul>
+  <p>
+    O corpo sobe, perde velocidade por causa da gravidade, até que em um certo ponto
+    atinge <strong>velocidade zero</strong> (o ponto mais alto). Depois começa a
+    descer, com velocidade crescendo em módulo, novamente pela ação da gravidade.
+  </p>
+
+  <h4>Ponto mais alto</h4>
+  <p>
+    No ponto mais alto:
+  </p>
+  <ul>
+    <li>a velocidade é <strong>zero</strong>;</li>
+    <li>a aceleração <strong>continua sendo</strong> <code>-g</code> (apenas a velocidade zera).</li>
+  </ul>
+
+  <hr />
+
+  <h2>9. Movimento Circular Uniforme (MCU)</h2>
+
+  <h3>9.1 Descrição geral</h3>
+  <p>
+    No <strong>movimento circular uniforme (MCU)</strong>, o corpo descreve uma
+    <strong>circunferência</strong> com velocidade escalar constante. Embora o
+    módulo da velocidade seja constante, a direção muda o tempo todo, o que tem
+    consequências importantes.
+  </p>
+
+  <h3>9.2 Velocidade angular (ω)</h3>
+  <p>
+    Em MCU, é muito útil trabalhar com o ângulo que o raio (que liga o centro ao
+    móvel) varre ao longo do tempo. A <strong>velocidade angular</strong> é:
+  </p>
+  <pre><code>ω = Δθ / Δt</code></pre>
+  <p>
+    Onde:
+  </p>
+  <ul>
+    <li><code>ω</code> é a velocidade angular;</li>
+    <li><code>Δθ</code> é a variação do ângulo (em radianos);
+    </li>
+    <li><code>Δt</code> é o intervalo de tempo.</li>
+  </ul>
+
+  <h3>9.3 Relação entre velocidade linear e angular</h3>
+  <p>
+    O comprimento do arco percorrido numa circunferência é dado por:
+  </p>
+  <pre><code>S = R·θ</code></pre>
+  <p>
+    onde <code>R</code> é o raio. Se dividirmos ambos os lados pelo tempo:
+  </p>
+  <pre><code>S / t = R·(θ / t)</code></pre>
+  <p>
+    Como <code>S/t</code> é a <strong>velocidade linear</strong> <code>v</code> e
+    <code>θ/t</code> é a <strong>velocidade angular</strong> <code>ω</code>, obtemos:
+  </p>
+  <pre><code>v = ω·R</code></pre>
+
+  <h3>9.4 Aceleração centrípeta</h3>
+  <p>
+    Mesmo com velocidade escalar constante, o MCU possui aceleração, porque a
+    <strong>direção</strong> da velocidade está mudando continuamente. Essa
+    aceleração, apontando sempre para o centro da circunferência, é chamada
+    <strong>aceleração centrípeta</strong>:
+  </p>
+  <pre><code>a_c = v² / R</code></pre>
+  <p>
+    Ela é responsável por “curvar” a trajetória, mantendo o corpo na órbita circular.
+  </p>
+
+  <hr />
+
+  <h2>10. Visão Geral e Conexões</h2>
+  <p>
+    A cinemática organiza o estudo do movimento em torno de algumas ideias centrais:
+  </p>
+  <ul>
+    <li><strong>Referencial</strong>: define se algo está em repouso ou movimento.</li>
+    <li><strong>Posição, deslocamento e distância</strong>: descrevem onde o corpo está e quanto se moveu.</li>
+    <li><strong>Velocidade</strong>: indica a taxa de mudança da posição.</li>
+    <li><strong>Aceleração</strong>: indica a taxa de mudança da velocidade.</li>
+    <li><strong>MRU</strong>: caso simples de velocidade constante.</li>
+    <li><strong>MRUV</strong>: caso em que a aceleração é constante, gerando equações quadráticas.</li>
+    <li><strong>Queda livre e lançamento vertical</strong>: aplicações diretas do MRUV com aceleração da gravidade.</li>
+    <li><strong>MCU</strong>: mostra que mesmo com velocidade constante pode existir aceleração, se a direção variar.</li>
+  </ul>
+  <p>
+    A partir desses blocos, é possível resolver a maioria dos exercícios de cinemática
+    do ensino médio, sempre interpretando com cuidado o que cada grandeza significa
+    fisicamente e escolhendo a equação que melhor se ajusta aos dados do problema.
+  </p>
+
+    <hr />
+
+  <h2>11. Exercícios Resolvidos de Cinemática</h2>
+
+  <h3>Exercício 1 — Deslocamento x Distância Percorrida</h3>
+  <p><strong>Enunciado.</strong> Um estudante caminha ao longo de uma linha reta, partindo da posição 0 m. Primeiro, ele vai até a posição 10 m. Em seguida, retorna até a posição 4 m. Considere o eixo orientado no sentido do movimento inicial.</p>
+  <p>Calcule:</p>
+  <ul>
+    <li>(a) O deslocamento total do estudante.</li>
+    <li>(b) A distância total percorrida.</li>
+  </ul>
+
+  <p><strong>Resolução comentada.</strong></p>
+  <p>
+    O deslocamento é definido como a variação da posição:
+  </p>
+  <pre><code>ΔS = S - S₀</code></pre>
+  <p>
+    A posição inicial é <code>S₀ = 0 m</code> e a posição final é <code>S = 4 m</code> (pois ele termina em 4 m).
+  </p>
+  <pre><code>ΔS = 4 − 0 = +4 m</code></pre>
+  <p>
+    O sinal positivo indica que, em relação à origem, ele terminou 4 m no sentido positivo do eixo.
+  </p>
+
+  <p>
+    Já a distância percorrida é o “comprimento do caminho”, somando todos os trechos, sem considerar o sentido.
+  </p>
+  <ul>
+    <li>Do 0 m até 10 m: percorre 10 m.</li>
+    <li>Do 10 m até 4 m: percorre 6 m.</li>
+  </ul>
+  <pre><code>Distância total = 10 m + 6 m = 16 m</code></pre>
+
+  <p><strong>Resposta.</strong></p>
+  <ul>
+    <li>(a) Deslocamento: <code>+4 m</code>.</li>
+    <li>(b) Distância percorrida: <code>16 m</code>.</li>
+  </ul>
+
+  <hr />
+
+  <h3>Exercício 2 — Velocidade Média em MRU</h3>
+  <p><strong>Enunciado.</strong> Um carro se desloca em linha reta com movimento retilíneo uniforme. Em <code>t = 0 s</code>, ele está na posição <code>S₀ = 30 m</code>. Em <code>t = 20 s</code>, ele está na posição <code>S = 230 m</code>.</p>
+  <p>
+    (a) Determine a velocidade média do carro nesse intervalo. <br>
+    (b) Encontre a função horária da posição <code>S(t)</code>, assumindo que o movimento é MRU com essa mesma velocidade.
+  </p>
+
+  <p><strong>Resolução comentada.</strong></p>
+  <p>
+    A velocidade média em linha reta é:
+  </p>
+  <pre><code>vₘ = ΔS / Δt</code></pre>
+  <p>
+    Calculando o deslocamento:
+  </p>
+  <pre><code>ΔS = S − S₀ = 230 − 30 = 200 m</code></pre>
+  <p>
+    O intervalo de tempo é:
+  </p>
+  <pre><code>Δt = 20 − 0 = 20 s</code></pre>
+  <p>
+    Logo:
+  </p>
+  <pre><code>vₘ = 200 / 20 = 10 m/s</code></pre>
+
+  <p>
+    Em MRU, a função horária da posição é:
+  </p>
+  <pre><code>S(t) = S₀ + v·t</code></pre>
+  <p>
+    Usando <code>S₀ = 30 m</code> e <code>v = 10 m/s</code>:
+  </p>
+  <pre><code>S(t) = 30 + 10·t</code></pre>
+
+  <p><strong>Resposta.</strong></p>
+  <ul>
+    <li>(a) <code>v = 10 m/s</code>.</li>
+    <li>(b) <code>S(t) = 30 + 10·t</code> (com S em metros e t em segundos).</li>
+  </ul>
+
+  <hr />
+
+  <h3>Exercício 3 — MRUV com Aceleração Constante</h3>
+  <p><strong>Enunciado.</strong> Um corpo parte do repouso em uma trajetória retilínea, com aceleração constante de <code>2 m/s²</code>. Considere <code>S₀ = 0 m</code>.</p>
+  <p>Calcule:</p>
+  <ul>
+    <li>(a) A velocidade do corpo após 6 s.</li>
+    <li>(b) A posição do corpo no instante <code>t = 6 s</code>.</li>
+  </ul>
+
+  <p><strong>Resolução comentada.</strong></p>
+  <p>
+    Em MRUV, a velocidade em função do tempo é dada por:
+  </p>
+  <pre><code>v(t) = v₀ + a·t</code></pre>
+  <p>
+    Como o corpo parte do repouso, <code>v₀ = 0</code>. A aceleração é <code>a = 2 m/s²</code>.
+  </p>
+  <pre><code>v(6) = 0 + 2·6 = 12 m/s</code></pre>
+
+  <p>
+    A posição em função do tempo é:
+  </p>
+  <pre><code>S(t) = S₀ + v₀·t + (a·t²)/2</code></pre>
+  <p>
+    Com <code>S₀ = 0</code>, <code>v₀ = 0</code> e <code>a = 2 m/s²</code>:
+  </p>
+  <pre><code>S(6) = 0 + 0·6 + (2·6²)/2
+S(6) = (2·36)/2
+S(6) = 72/2
+S(6) = 36 m</code></pre>
+
+  <p><strong>Resposta.</strong></p>
+  <ul>
+    <li>(a) <code>v(6) = 12 m/s</code>.</li>
+    <li>(b) <code>S(6) = 36 m</code>.</li>
+  </ul>
+
+  <hr />
+
+  <h3>Exercício 4 — Queda Livre (Sentido para Baixo Positivo)</h3>
+  <p><strong>Enunciado.</strong> De uma janela a 20 m de altura em relação ao solo, uma pedra é simplesmente solta (queda livre), sem velocidade inicial. Adote o sentido vertical para baixo como positivo e considere <code>g = 10 m/s²</code>.</p>
+  <p>Determine:</p>
+  <ul>
+    <li>(a) O tempo que a pedra leva para alcançar o solo.</li>
+    <li>(b) A velocidade com que chega ao solo.</li>
+  </ul>
+
+  <p><strong>Resolução comentada.</strong></p>
+  <p>
+    Em queda livre, com sentido “para baixo” positivo, temos:
+  </p>
+  <ul>
+    <li><code>S₀ = 0</code> (posição inicial na janela);</li>
+    <li><code>S = 20 m</code> (posição do solo);</li>
+    <li><code>v₀ = 0</code> (solta do repouso);</li>
+    <li><code>a = g = 10 m/s²</code>.</li>
+  </ul>
+  <p>
+    Usamos a função horária da posição:
+  </p>
+  <pre><code>S(t) = S₀ + v₀·t + (a·t²)/2</code></pre>
+  <p>
+    Substituindo:
+  </p>
+  <pre><code>20 = 0 + 0·t + (10·t²)/2
+20 = 5·t²
+t² = 4
+t = 2 s</code></pre>
+  <p>
+    O tempo de queda é 2 s (descartando o valor negativo, que não tem sentido físico aqui).
+  </p>
+
+  <p>
+    Para a velocidade ao chegar ao solo, usamos:
+  </p>
+  <pre><code>v(t) = v₀ + a·t</code></pre>
+  <p>
+    Com <code>v₀ = 0</code>, <code>a = 10 m/s²</code> e <code>t = 2 s</code>:
+  </p>
+  <pre><code>v(2) = 0 + 10·2 = 20 m/s</code></pre>
+  <p>
+    O sinal é positivo, indicando que a velocidade está no sentido escolhido como positivo (para baixo).
+  </p>
+
+  <p><strong>Resposta.</strong></p>
+  <ul>
+    <li>(a) <code>t = 2 s</code>.</li>
+    <li>(b) <code>v = 20 m/s</code> (para baixo).</li>
+  </ul>
+
+  <hr />
+
+  <h3>Exercício 5 — Movimento Circular Uniforme</h3>
+  <p><strong>Enunciado.</strong> Um ponto material se move em uma circunferência de raio <code>R = 2 m</code> descrevendo um movimento circular uniforme. Ele completa 5 voltas em 10 segundos.</p>
+  <p>Determine:</p>
+  <ul>
+    <li>(a) A velocidade angular <code>ω</code> em rad/s.</li>
+    <li>(b) A velocidade linear <code>v</code>.</li>
+    <li>(c) A aceleração centrípeta <code>a_c</code>.</li>
+  </ul>
+
+  <p><strong>Resolução comentada.</strong></p>
+  <p>
+    Primeiro, calculamos o ângulo total percorrido em radianos. Uma volta completa corresponde a <code>2π</code> rad.
+  </p>
+  <p>
+    Em 5 voltas:
+  </p>
+  <pre><code>Δθ = 5 · 2π = 10π rad</code></pre>
+  <p>
+    O tempo total é <code>Δt = 10 s</code>. A velocidade angular é dada por:
+  </p>
+  <pre><code>ω = Δθ / Δt = 10π / 10 = π rad/s</code></pre>
+
+  <p>
+    Para a velocidade linear, usamos a relação:
+  </p>
+  <pre><code>v = ω·R</code></pre>
+  <p>
+    Com <code>ω = π rad/s</code> e <code>R = 2 m</code>:
+  </p>
+  <pre><code>v = π · 2 = 2π m/s</code></pre>
+
+  <p>
+    A aceleração centrípeta é:
+  </p>
+  <pre><code>a_c = v² / R</code></pre>
+  <p>
+    Substituindo <code>v = 2π</code> e <code>R = 2</code>:
+  </p>
+  <pre><code>a_c = (2π)² / 2
+a_c = 4π² / 2
+a_c = 2π² m/s²</code></pre>
+
+  <p><strong>Resposta.</strong></p>
+  <ul>
+    <li>(a) <code>ω = π rad/s</code>.</li>
+    <li>(b) <code>v = 2π m/s</code>.</li>
+    <li>(c) <code>a_c = 2π² m/s²</code>.</li>
+  </ul>
+
+
+  <h2>12. Questão Resolvida — ENEM 2021 (Q.128)</h2>
+
+<h3>Enunciado da Questão</h3>
+<p>
+A figura foi extraída de um antigo jogo de computador chamado <strong>Bang! Bang!</strong>.
+No jogo, dois competidores controlam canhões A e B, disparando alternadamente balas com o objetivo de atingir o adversário. Cada disparo exige a escolha de um valor estimado para a <strong>velocidade inicial</strong> e para o <strong>ângulo de disparo</strong>.
+</p>
+<img src="enem1.png" alt="">
+<p>No jogo, dois competidores controlam os canhões A e B, disparando balas alternadamente com o objetivo de atingir o canhão do adversário; para isso, atribuem valores estimados para o módulo da velocidade inicial de disparo (V0) e para o ângulo de disparo (0).
+<br>
+<br>
+Em determinado momento de uma partida, o competidor B deve disparar; ele sabe que a bala disparada anteriormente, 0 = 53°, passou tangenciando o ponto P.
+<br>
+<br>
+No jogo, g é igual a 10 m/s². Considere sen 53° = 0,8; cos 53° = 0,6 e desprezível a ação de forças dissipativas.
+<br>
+<br>
+Disponível em: http://mebdownloads.butzke.net.br. Acesso em: 18 abr. 2015 (adaptado).
+<br>
+<br>
+Com base nas distâncias dadas e mantendo o último ângulo de disparo, qual deveria ser, aproximadamente, o menor valor de que permitiria ao disparo efetuado pelo canhão B atingir o canhão A?</p>
+
+<p><strong>Alternativas:</strong> a) 30 m/s; b) 35 m/s; c) 40 m/s; d) 45 m/s; e) 50 m/s</p>
+
+<hr>
+
+<h3>Estratégia da Resolução</h3>
+<p>
+Para que o tiro atinja o canhão A, o ponto A (que está a 120 m na horizontal e 35 m acima de B) deve pertencer à <strong>trajetória parabólica</strong> do projétil. Assim, usamos a equação da trajetória de um lançamento oblíquo:
+</p>
+
+<pre><code>y = x·tan(θ) − (g·x²) / (2·v₀²·cos²θ)</code></pre>
+
+<p>
+Essa fórmula vem de substituir o tempo <code>t</code> da equação horizontal na equação vertical, eliminando o tempo e obtendo a curva <strong>diretamente em função de x e y</strong>.
+</p>
+
+<p>
+Aplicamos então as coordenadas do ponto A:
+</p>
+
+<ul>
+  <li>x = 120 m</li>
+  <li>y = 35 m</li>
+  <li>θ = 53° → tan(53°) = 4/3</li>
+  <li>g = 10 m/s²</li>
+  <li>cos²(53°) = (0,6)² = 0,36</li>
+</ul>
+
+<hr>
+
+<h3>Substituição na Equação da Trajetória</h3>
+
+<pre><code>35 = 120·tan(53°) − (10·120²) / (2·v₀²·0,36)</code></pre>
+
+<p>Como tan(53°) = 4/3:</p>
+
+<pre><code>35 = 160 − (10·14400)/(0,72·v₀²)</code></pre>
+
+<p>Efetuando a divisão:</p>
+
+<pre><code>(10·14400)/0,72 = 200000</code></pre>
+
+<p>Então:</p>
+
+<pre><code>35 = 160 − (200000 / v₀²)</code></pre>
+
+<p>Isolando <code>v₀²</code>:</p>
+
+<pre><code>200000 / v₀² = 125
+v₀² = 200000 / 125
+v₀² = 1600
+v₀ = 40 m/s</code></pre>
+
+<hr>
+
+<h3>Conclusão</h3>
+<p>
+A velocidade inicial mínima que faz a parábola <strong>passar exatamente pelo ponto A</strong>, mantendo θ = 53°, é:
+</p>
+
+<h2 style="text-align:center; margin-top:1.4rem;">
+40 m/s
+</h2>
+
+<p style="text-align:center; font-weight:600;">
+Alternativa correta: <strong>C</strong>.
+</p>
+
+<p>
+Qualquer valor menor que 40 m/s faz a bala cair antes; valores maiores passam acima do alvo. <br>
+Por isso, 40 m/s é a velocidade mínima que realmente acerta o canhão A.
+</p>
+
+
+
+</main>
+</body>
+</html>
