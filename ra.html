@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mandarim — Listening Trainer (Corrigido)</title>
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --card:#0f1720;
+      --accent:#56a5eb;
+      --muted:#9aa6b2;
+      --text:#e6eef6;
+      --glass: rgba(255,255,255,0.03);
+      --radius:14px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color-scheme: dark;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);}
+
+    .app{
+      min-height:100vh;display:grid;place-items:center;padding:2rem;
+    }
+
+    .card{
+      width:min(980px,96%);background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent 40%), var(--card);
+      border-radius:var(--radius);padding:1.6rem;box-shadow:0 10px 30px rgba(2,6,23,0.6);
+      display:grid;grid-template-columns:1fr 320px;gap:1.2rem;align-items:start;
+    }
+
+    header{grid-column:1/-1;display:flex;gap:1rem;align-items:center;justify-content:space-between}
+    h1{font-size:1.35rem;margin:0;color:var(--accent)}
+    .meta{color:var(--muted);font-size:0.9rem}
+
+    .left{padding:1rem 0}
+    .counter{font-weight:600;color:var(--muted);margin-bottom:0.4rem}
+    .question{font-size:2.1rem;line-height:1.15;word-break:break-word}
+    .pinyin{color:var(--muted);margin-top:0.35rem}
+    .translation{margin-top:1rem;color:var(--muted);font-size:1rem}
+
+    .controls{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.1rem}
+    .btn{appearance:none;border:1px solid rgba(255,255,255,0.06);background:transparent;padding:0.6rem 0.9rem;border-radius:10px;color:var(--text);cursor:pointer;font-weight:600}
+    .btn:focus{outline:3px solid rgba(86,165,235,0.18);}
+
+    .right{padding:1rem;border-left:1px dashed rgba(255,255,255,0.03)}
+    .control-row{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.8rem}
+    label{font-size:0.95rem;color:var(--muted)}
+    select,input[type=range]{width:100%}
+
+    .hidden{display:none !important}
+
+    /* responsive */
+    @media (max-width:880px){
+      .card{grid-template-columns:1fr;}
+      .right{border-left:0;border-top:1px dashed rgba(255,255,255,0.03);}
+      .question{font-size:1.5rem}
+    }
+
+    /* focus and accessible contrast tweaks */
+    button.primary{background:linear-gradient(90deg,var(--accent),#7bd0ff);color:#022233;border:0}
+    .kbd{background:var(--glass);padding:0.12rem 0.38rem;border-radius:6px;font-size:0.85rem;color:var(--muted)}
+
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="card" role="application" aria-labelledby="appTitle">
+      <header>
+        <div>
+          <h1 id="appTitle">Mandarim — Listening Trainer</h1>
+          <div class="meta">Treino de escuta • <span class="kbd">Espaço</span> play/pause • <span class="kbd">→</span> próximo</div>
+        </div>
+        <div>
+          <small class="meta">Versão: Corrigida</small>
+        </div>
+      </header>
+
+      <div class="left">
+        <div class="counter" id="counter">0 / 0</div>
+        <article aria-live="polite">
+          <h2 class="question" id="question" lang="zh-CN">—</h2>
+          <div class="pinyin" id="pinyin" aria-hidden="false"> </div>
+          <p class="translation" id="resposta"> </p>
+        </article>
+
+        <div class="controls" role="group" aria-label="Controles de reprodução">
+          <button class="btn primary" id="playBtn">🎧 Ouvir</button>
+          <button class="btn" id="pauseBtn">⏸️ Pausar</button>
+          <button class="btn" id="stopBtn">⏹️ Parar</button>
+          <button class="btn" id="replayBtn">🔁 Repetir</button>
+          <button class="btn" id="nextBtn">➡️ Próximo</button>
+          <button class="btn" id="prevBtn">⬅️ Anterior</button>
+        </div>
+
+        <div style="margin-top:0.8rem;display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center">
+          <label for="velocidade">Velocidade <span id="rateVal" class="kbd">0.9×</span></label>
+          <input type="range" id="velocidade" min="0.4" max="1.6" step="0.05" value="0.9">
+
+          <label for="pitch">Pitch <span id="pitchVal" class="kbd">1.0</span></label>
+          <input type="range" id="pitch" min="0.5" max="2" step="0.05" value="1">
+        </div>
+      </div>
+
+      <aside class="right">
+        <div class="control-row">
+          <label for="voiceSelect">Voz</label>
+          <select id="voiceSelect" aria-label="Selecione voz">
+            <option>Carregando vozes...</option>
+          </select>
+        </div>
+
+        <div class="control-row">
+          <label for="toggleText">Mostrar texto</label>
+          <input id="toggleText" type="checkbox" checked>
+        </div>
+
+        <div class="control-row">
+          <label for="randomize">Aleatório</label>
+          <input id="randomize" type="checkbox">
+        </div>
+
+        <div style="margin-top:0.6rem;color:var(--muted);font-size:0.9rem">
+          <p><strong>Dicas</strong></p>
+          <ul style="margin:0 0 0 1rem;padding:0.2rem 0">
+            <li><span class="kbd">Espaço</span> toca ou pausa.</li>
+            <li>Se não houver som, verifique se o volume do sistema está alto.</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:1rem">
+          <button class="btn" id="exportBtn">📥 Exportar</button>
+        </div>
+      </aside>
+
+    </section>
+  </main>
+
+  <span class="sr-only" id="status">Sistema pronto</span>
+
+  <script>
+    // --- Dados ---
+    const questions = [
+  {
+    "question": "большой",
+    "resposta": "grande"
+  },
+  {
+    "question": "Это большой дом.",
+    "resposta": "Esta é uma casa grande."
+  },
+  {
+    "question": "У него большой город.",
+    "resposta": "Ele tem uma cidade grande."
+  },
+  {
+    "question": "Большой парк здесь.",
+    "resposta": "Há um parque grande aqui."
+  },
+  {
+    "question": "маленький",
+    "resposta": "pequeno"
+  },
+  {
+    "question": "Это маленькая книга.",
+    "resposta": "Este é um livro pequeno."
+  },
+  {
+    "question": "Маленький кот спит.",
+    "resposta": "O gato pequeno dorme."
+  },
+  {
+    "question": "У меня маленькая комната.",
+    "resposta": "Eu tenho um quarto pequeno."
+  },
+  {
+    "question": "хороший",
+    "resposta": "bom"
+  },
+  {
+    "question": "Это хороший день.",
+    "resposta": "Este é um bom dia."
+  },
+  {
+    "question": "Он хороший человек.",
+    "resposta": "Ele é uma boa pessoa."
+  },
+  {
+    "question": "Хорошая идея!",
+    "resposta": "Boa ideia!"
+  },
+  {
+    "question": "плохой",
+    "resposta": "ruim"
+  },
+  {
+    "question": "Это плохая погода.",
+    "resposta": "Este é um tempo ruim."
+  },
+  {
+    "question": "У меня плохой день.",
+    "resposta": "Eu tenho um dia ruim."
+  },
+  {
+    "question": "Это плохая идея.",
+    "resposta": "Isso é uma ideia ruim."
+  },
+  {
+    "question": "новый",
+    "resposta": "novo"
+  },
+  {
+    "question": "Это новый телефон.",
+    "resposta": "Este é um telefone novo."
+  },
+  {
+    "question": "У меня новая книга.",
+    "resposta": "Eu tenho um livro novo."
+  },
+  {
+    "question": "Новый дом большой.",
+    "resposta": "A casa nova é grande."
+  },
+  {
+    "question": "старый",
+    "resposta": "velho / antigo"
+  },
+  {
+    "question": "Это старый дом.",
+    "resposta": "Esta é uma casa antiga."
+  },
+  {
+    "question": "Старый друг здесь.",
+    "resposta": "O amigo antigo está aqui."
+  },
+  {
+    "question": "У него старая машина.",
+    "resposta": "Ele tem um carro velho."
+  },
+  {
+    "question": "красивый",
+    "resposta": "bonito"
+  },
+  {
+    "question": "Это красивый город.",
+    "resposta": "Esta é uma cidade bonita."
+  },
+  {
+    "question": "Она красивая.",
+    "resposta": "Ela é bonita."
+  },
+  {
+    "question": "Красивый цветок.",
+    "resposta": "Flor bonita."
+  },
+  {
+    "question": "простой",
+    "resposta": "simples"
+  },
+  {
+    "question": "Это простой вопрос.",
+    "resposta": "Esta é uma pergunta simples."
+  },
+  {
+    "question": "Простая работа.",
+    "resposta": "Trabalho simples."
+  },
+  {
+    "question": "Это просто.",
+    "resposta": "Isso é simples."
+  }
+];
+
+    // --- Estado ---
+    let index = 0;
+    let voices = [];
+    let lastUtterance = null;
+    const supportsSpeech = 'speechSynthesis' in window;
+
+    // --- Elementos ---
+    const el = id => document.getElementById(id);
+    const counterEl = el('counter');
+    const qEl = el('question');
+    const pinyinEl = el('pinyin');
+    const rEl = el('resposta');
+    const playBtn = el('playBtn');
+    const pauseBtn = el('pauseBtn');
+    const stopBtn = el('stopBtn');
+    const replayBtn = el('replayBtn');
+    const nextBtn = el('nextBtn');
+    const prevBtn = el('prevBtn');
+    const rateInput = el('velocidade');
+    const pitchInput = el('pitch');
+    const rateVal = el('rateVal');
+    const pitchVal = el('pitchVal');
+    const voiceSelect = el('voiceSelect');
+    const toggleText = el('toggleText');
+    const randomize = el('randomize');
+    const status = el('status');
+
+    // --- Funções Principais ---
+
+    function render(){
+      // Atualiza textos na tela
+      counterEl.textContent = `${index+1} / ${questions.length}`;
+      const item = questions[index];
+      qEl.textContent = item.question;
+      pinyinEl.textContent = item.pinyin || '';
+      rEl.textContent = item.resposta || '';
+      status.textContent = `Frase ${index+1} carregada`;
+      
+      // Aplica visibilidade baseada no checkbox
+      updateTextVisibility();
+    }
+
+    function updateTextVisibility() {
+      const show = toggleText.checked;
+      const displayValue = show ? 'block' : 'none';
+      qEl.style.display = displayValue;
+      pinyinEl.style.display = displayValue;
+      rEl.style.display = displayValue;
+    }
+
+    // --- Áudio e Vozes ---
+
+    function populateVoices(){
+      voices = speechSynthesis.getVoices() || [];
+      voiceSelect.innerHTML = '';
+
+      if(voices.length === 0){
+        const opt = document.createElement('option');
+        opt.textContent = "Nenhuma voz detectada (aguarde...)";
+        voiceSelect.appendChild(opt);
+        return;
+      }
+
+      voices.forEach((v, i) =>{
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = `${v.name} (${v.lang})`;
+        voiceSelect.appendChild(opt);
+      });
+
+      // Recupera config salva ou tenta selecionar voz chinesa (zh-CN)
+      loadSettings(); 
+      if (!localStorage.getItem('mandarin_settings_v1')) {
+          const zhIndex = voices.findIndex(v => v.lang && v.lang.toLowerCase().includes('zh'));
+          if(zhIndex >= 0) voiceSelect.value = zhIndex;
+      }
+    }
+
+    function speak(text){
+      if(!supportsSpeech) return;
+      speechSynthesis.cancel(); // Para anterior
+      
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'zh-CN';
+      u.rate = parseFloat(rateInput.value);
+      u.pitch = parseFloat(pitchInput.value);
+
+      const chosen = voices[voiceSelect.value];
+      if(chosen) u.voice = chosen;
+
+      u.onstart = ()=>{ lastUtterance = u; status.textContent = 'Tocando...'; }
+      u.onend = ()=>{ status.textContent = 'Pronto'; }
+      u.onerror = (e)=>{ status.textContent = 'Erro de áudio'; console.error(e); }
+
+      speechSynthesis.speak(u);
+      lastUtterance = u;
+    }
+
+    // --- Eventos ---
+
+    if(supportsSpeech){
+      // Chrome precisa disso para carregar vozes
+      speechSynthesis.onvoiceschanged = populateVoices;
+    } else {
+      status.textContent = 'Navegador sem suporte a síntese de fala.';
+    }
+
+    playBtn.addEventListener('click', ()=>{ speak(questions[index].question); });
+    pauseBtn.addEventListener('click', ()=>{ if(supportsSpeech) speechSynthesis.pause(); });
+    stopBtn.addEventListener('click', ()=>{ if(supportsSpeech) speechSynthesis.cancel(); });
+    replayBtn.addEventListener('click', ()=>{ 
+        if(lastUtterance) speak(lastUtterance.text); 
+        else speak(questions[index].question); 
+    });
+
+    nextBtn.addEventListener('click', ()=>{ 
+        if(randomize.checked) {
+            let newIndex = index;
+            while(newIndex === index && questions.length > 1) {
+                 newIndex = Math.floor(Math.random()*questions.length);
+            }
+            index = newIndex;
+        } else {
+            index = (index+1) % questions.length; 
+        }
+        render(); 
+        saveProgress(); 
+    });
+
+    prevBtn.addEventListener('click', ()=>{ 
+        index = (index-1+questions.length) % questions.length; 
+        render(); 
+        saveProgress(); 
+    });
+
+    rateInput.addEventListener('input', ()=>{ rateVal.textContent = rateInput.value + '×'; saveSettings(); });
+    pitchInput.addEventListener('input', ()=>{ pitchVal.textContent = pitchInput.value; saveSettings(); });
+    
+    toggleText.addEventListener('change', updateTextVisibility);
+    voiceSelect.addEventListener('change', saveSettings);
+
+    // Teclado
+    window.addEventListener('keydown', (e)=>{
+      if(e.code === 'Space'){
+        e.preventDefault();
+        if(!supportsSpeech) return;
+        if(speechSynthesis.speaking && !speechSynthesis.paused) speechSynthesis.pause();
+        else if(speechSynthesis.paused) speechSynthesis.resume();
+        else speak(questions[index].question);
+      }
+      if(e.key === 'ArrowRight') nextBtn.click();
+      if(e.key === 'ArrowLeft') prevBtn.click();
+    });
+
+    // --- Persistência ---
+
+    function saveSettings(){
+      const s = {
+        rate: rateInput.value,
+        pitch: pitchInput.value,
+        voice: voiceSelect.value
+      };
+      localStorage.setItem('mandarin_settings_v1', JSON.stringify(s));
+    }
+
+    function loadSettings(){
+      const raw = localStorage.getItem('mandarin_settings_v1');
+      if(!raw) return;
+      try{
+        const s = JSON.parse(raw);
+        if(s.rate) { rateInput.value = s.rate; rateVal.textContent = s.rate + '×'; }
+        if(s.pitch) { pitchInput.value = s.pitch; pitchVal.textContent = s.pitch; }
+        if(s.voice !== undefined && voiceSelect.options[s.voice]){
+          voiceSelect.value = s.voice;
+        }
+      } catch(e){ console.error("Erro ao carregar settings", e); }
+    }
+
+    function saveProgress(){
+      localStorage.setItem('mandarin_progress_v1', JSON.stringify({index}));
+    }
+
+    function loadProgress(){
+      const raw = localStorage.getItem('mandarin_progress_v1');
+      if(!raw) return;
+      try{ 
+          const p = JSON.parse(raw); 
+          if(typeof p.index === 'number') index = Math.min(Math.max(0,p.index), questions.length-1); 
+      } catch(e){}
+    }
+
+    el('exportBtn').addEventListener('click', ()=>{
+      const data = {questions, settings: localStorage.getItem('mandarin_settings_v1'), progress: localStorage.getItem('mandarin_progress_v1')};
+      const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'mandarin-trainer-export.json'; a.click(); URL.revokeObjectURL(url);
+    });
+
+    // --- Inicialização ---
+    function init(){
+      loadProgress();
+      // Tenta carregar vozes imediatamente (alguns browsers já as têm)
+      if(supportsSpeech) populateVoices();
+      render();
+    }
+
+    init();
+
+  </script>
+</body>
+</html>
